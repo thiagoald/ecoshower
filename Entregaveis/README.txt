@@ -1,0 +1,1 @@
+Os arquivos com extensão VSD podem ser abertos no Visio. Os que possuem extensão XML podem ser abertos no "draw.io". 
