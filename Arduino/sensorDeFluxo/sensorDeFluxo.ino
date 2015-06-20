@@ -11,6 +11,7 @@ void setup()
   pinMode(2, INPUT);
   attachInterrupt(0, incpulso, RISING); //Configura o pino 2(Interrupção 0) para trabalhar como interrupção
   Serial.println("\n\nInicio\n\n"); //Imprime Inicio na serial
+  vazao = 0;
 } 
 
 
@@ -18,17 +19,18 @@ void loop ()
 {
   contaPulso = 0;   //Zera a variável para contar os giros por segundos
   sei();      //Habilita interrupção
-  delay (100); //Aguarda 1 segundo
+  delay (1000); //Aguarda 1 segundo
   cli();      //Desabilita interrupção
   
-  vazao = contaPulso / 5.5; //Converte para L/min
+  vazao += contaPulso/(6.12*60); //Converte para L/s
   media=media+vazao; //Soma a vazão para o calculo da media
   i++;
   
-  Serial.print(vazao); //Imprime na serial o valor da vazão
-  Serial.print(" L/min - "); //Imprime L/min
-  Serial.print(i); //Imprime a contagem i (segundos)
-  Serial.println("s"); //Imprime s indicando que está em segundos
+  Serial.print("Vazao: ");
+  Serial.println(vazao); //Imprime na serial o valor da vazão
+  //Serial.print(" L/min - "); //Imprime L/min
+  //Serial.print(i); //Imprime a contagem i (segundos)
+  //Serial.println("s"); //Imprime s indicando que está em segundos
   
   if(i==6000)
   {
