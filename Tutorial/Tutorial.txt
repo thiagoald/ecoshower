@@ -1,0 +1,26 @@
+1) Abrir o Git Bash
+
+2) Entrar na pasta do projeto (ecoshower)
+
+3.1) Se não tiver clonado ainda, clonar o repositório no github
+	a) Entrar em github.com/thiagoald/ecoshower e copiar a URL [imagem 1]
+	b) Entrar com o seguinte comando:
+		$ git clone <URL copiada>
+	c) Será criada uma pasta "ecoshower" no diretório atual
+
+3.2) Se já tiver clonado, atualizar o código local com as modificações mais recentes que foram feitas no servidor:
+		$ git pull
+
+4) Verificar se houve conflito em algum arquivo:
+	$ git status
+
+5.1) Caso existam conflitos, é preciso resolvê-los. Para isso, basta abrir todos os arquivos indicados e procurar por conflitos. Basta procurar por instâncias de "==========". Depois basta comparar os trechos de código entre "<<<<<<<" e "==========" e entre ">>>>>>" e "==========". Um dos dois é o trecho local e o outro é o trecho que está no repositório.
+
+5.2) Caso não exista nenhum conflito, basta adicionar os arquivos novos (caso haja algum) e dar commit:
+	$ git add *
+	$ git commit -am "Fiz tais modificações: modificação 1, modificação 2, modificação 3."
+
+6) Fazer upload das modificações para o servidor:
+	$ git push
+
+7) Pronto! Código atualizado no servidor. É recomendável fazer esse processo de tempos em tempos para que tanto o servidor quanto o código local fiquem sempre atualizados.
