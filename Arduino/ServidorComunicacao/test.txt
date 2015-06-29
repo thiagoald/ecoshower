@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<usuarios>
+	<usuario nome="fulano">
+		<banhos>
+			<banho>
+			  <medicao inicio="14:00:00" vazao="0.1">
+			  </medicao>
+			  <medicao inicio="14:00:01" vazao="0.1">
+			  </medicao>
+			  <medicao inicio="14:00:02" vazao="0.1">
+			  </medicao>
+			  <medicao inicio="14:00:03" vazao="0.1">
+			  </medicao>
+			  <medicao inicio="14:00:04" vazao="0.1">
+			  </medicao>
+			  <medicao inicio="14:00:05" vazao="0.1">
+			  </medicao>
+			</banho>
+		</banhos>
+	</usuario>
+	
+	<usuario nome="sicrano">
+		<banhos>
+			<banho>
+			  <medicao inicio="14:00" vazao="0.1">
+			  </medicao>
+			</banho>
+		</banhos>
+	</usuario>
+	
+	<usuario nome="beltrano">
+		<banhos>
+			<banho>
+			  <medicao inicio="14:00" vazao="0.1">
+			  </medicao>
+			</banho>
+		</banhos>
+	</usuario>
+</usuarios>
