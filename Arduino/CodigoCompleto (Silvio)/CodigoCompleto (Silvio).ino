@@ -19,7 +19,7 @@ byte ipArduino[]   = {  192, 168, 1, 48};                  // IP estático do ar
 char dadosDoBanho[1000];                                   // String onde escrevemos os dados (no formato JSON) para mandar pro servidor
 char ipServidor[30] = "192.168.1.48";                      // IP local da máquina onde o servidor está rodando (MUDAR)
 
-int estado = 0;                                            // Determina o estado em que a maquina se encontra 
+int estado = 1;                                            // Determina o estado em que a maquina se encontra 
 int timeout = 0;                                           // contador para contar tempo
 float vazao = 0;                                           // Variavel para armazenar o valor em L/min
 float media=0;                                             // Variavel para tirar a media a cada 1 minuto
@@ -31,11 +31,11 @@ EthernetClient client;
 
 void setup()
 {
-  Ethernet.begin(mac);                                    // IP dinâmico  //Ethernet.begin(mac,ipArduino);  // IP estático
-  Serial.begin(BAUD_RATE);
-  Serial.print("Usando o seguinte IP: ");
-  Serial.println(Ethernet.localIP());
-  delay(2000);
+  //Ethernet.begin(mac);                                    // IP dinâmico  //Ethernet.begin(mac,ipArduino);  // IP estático
+  //Serial.begin(BAUD_RATE);
+  //Serial.print("Usando o seguinte IP: ");
+  //Serial.println(Ethernet.localIP());
+  //delay(2000);
   Serial.println("Conectando a rede local...");
   //Pinos sensor de presen�a  
   pinMode (SP_VCC,OUTPUT);                                // vcc
@@ -113,10 +113,9 @@ void loop()
   duration = pulseIn(SP_ECHO, HIGH);
   inches = microsecondsToInches(duration);
   cm = microsecondsToCentimeters(duration);
-      
   if(estado==0)   //Autenticacao
   {
-    delay(1000);            
+            
     estado=1; // Sempre Autenticado, Banho eterno, Podemos botar uma condicional aqui para acabar o banho em um determinado momento
 
                            
@@ -130,8 +129,9 @@ void loop()
     */
   }
 
-  if(estado == 1) // Espera Cliente entrar debaixo do chuveiro
+  else if(estado == 1) // Espera Cliente entrar debaixo do chuveiro
   {
+      Serial.println("Esperando Usuario");
       validacaoBanho = 1;                               // ? Se o chuveiro nao abriu nenhuma vez, isso foi um banho ?
       digitalWrite(VALVULA,HIGH);                       //Fecha a valvula
       timeout++;                                        //Contando tempo
@@ -142,12 +142,15 @@ void loop()
          estado = 2;                                    //Estado 2 = inicio do banho
   }
 
-  if(estado==2) // Banho acontecendo
+  else if(estado==2) // Banho acontecendo
   {
-     
+      Serial.println("Banho Acontecendo");
       timeout = 0;                                      //tempo zerado para um nova recontagem
       digitalWrite(VALVULA,LOW);                        //abre a valvula
       contaPulso = 0;                                   //Zera a vari�vel para contar os giros por segundos
+      // TODO
+      // Eliminar esse delay de 1 segundo
+      // Colocar o sei() e o cli() em outro lugar pra contar os pulsos paralelamente
       sei();                                            //Habilita interrupcao
       delay (1000);                                     //Aguarda 1 segundo
       cli();                                            //Desabilita interrupcao
@@ -162,12 +165,15 @@ void loop()
       
       if(cm > 100)                                      //Se o usuario sair do alcancedo chuveiro
       {
+          Serial.println("Banho Parado");
+          
           digitalWrite(VALVULA,HIGH);                    //Fecha a valvula
           estado = 0;                                    //Vai para autenticacao
       }
+      
          
   }
-  if(estado==3)           
+  else if(estado==3)           
   {
       validacaoBanho = 0;
       sprintf(dadosDoBanho, "{\"Valor\" : 1 ,\"nome\" : \"fulano\" , \"Consumo\" : %d,  \"fluxoMedio\" : %d   \"duracao\":%d}", 10,20,30);
@@ -175,8 +181,5 @@ void loop()
       enviar(dadosDoBanho);
       estado=0;
   }
-  delay(100);
+  
 }
- 
-
-
