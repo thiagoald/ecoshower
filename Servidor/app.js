@@ -6,7 +6,7 @@ var dados = 'dados.txt'
 var jsonDateStart 
 var jsonDateEnd
 var cont = 0
-var __rootDir = 'C:/Users/Magda/Downloads/ServidorComunicacao';
+var __rootDir = 'C:/Users/rjs4/Desktop/ecoshower-master/Servidor';
 
 // Atencao
 // 1. O servidor funciona asim: Se existe um txt com seu nome na pasta, estao, voce esta cadastrado (Gambiarra temporaria, ou nao).
@@ -23,10 +23,9 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 
-app.get('/', function (req, res) 
-{	
-	res.send('OK');
-	//res.sendFile('test.html', {root: __rootDir});
+app.get('/', function (req, res)
+{
+	res.sendFile('test.html', {root: __rootDir});
 });
 
 
