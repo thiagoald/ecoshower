@@ -14,7 +14,6 @@ var __rootDir = 'C:/Users/Magda/Downloads/ServidorComunicacao';
 // 3. Se o json vem com Valor == 1, isso é uma atualizacao
 // 4. Se o json vem com Valor == 0, o arduino esta pedindo permissao para comecar
 // 5. O servidor ate pode funcionar assim, mas, precisa sinalizar ao arduino para inicar o banho (nao consegui fazer)
-
 //Fluxo de controle: O arduino pede permissao ao servidor para iniciar o banho, o servidor permite ou nao o banho, o arduino tendo a confirmacao do banho
 //inicia o banho e no final manda a atualizacao.
 app.use(express.static('public'));
@@ -26,21 +25,27 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 
 app.get('/', function (req, res) 
 {	
-	res.sendFile('test.html', {root: __rootDir});
+	res.send('OK');
+	//res.sendFile('test.html', {root: __rootDir});
 });
 
 
 app.post('/', function (req, res) {
 	var now = new Date();
-	var string = '?' 
+	var string = '?' ;
 	//res.send(string + 'sucesso'); // Confirma recebimento
     cont = cont + 1;
     if(cont<4)
-    	res.send(string + 'NWork');
+    	res.send(string + 'NWork' + string);
     else if (cont==4)
-    	res.send(string + 'Work');
+    	res.send(string + 'Work' + string);
     else
-    	res.send(string + 'Serrita');
+    {
+    	res.send(string + 'Serrita' + string);
+    }
+
+
+
 
     //console.log('Cliente Nao Cadastrado, Porfavor, tente novamente');	
     fs.readFile('./Usuarios/'+req.body.nome+'.txt', 'utf8', function(err,data){	 
