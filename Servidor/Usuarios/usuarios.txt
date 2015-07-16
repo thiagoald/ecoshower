@@ -1,8 +1,0 @@
-{
-	'usuarios':
-	[
-		'fulano' : 'fulano.txt',
-		'sicrano' : 'sicrano.txt',
-		'beltrano' : 'beltrano.txt'
-	]
-}
