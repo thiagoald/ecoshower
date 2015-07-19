@@ -7,7 +7,7 @@ var jsonDateStart
 var jsonDateEnd
 var cont = 0
 var ready = 0;
-var __rootDir = 'C:/Users/rjs4/Desktop/ecoshower/Servidor';
+var __rootDir = 'C:/Users/Magda/Downloads/Servidor';
 
 // Atencao
 // 1. O servidor funciona asim: Se existe um txt com seu nome na pasta, estao, voce esta cadastrado (Gambiarra temporaria, ou nao).

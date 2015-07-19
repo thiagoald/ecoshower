@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="nl">
+    <head>
+        <meta charset="utf-8">
+        <title>Become a member</title>
+        <script type="text/javascript" src="Chart.js"></script>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    </head>
+
+    <body onLoad="init()">
+		<button type="button" onclick="addRefresh()">Add refresh!</button>
+        <script type="text/javascript">
+		
+		var myLineChart1, myLineChart2;
+		var data1 = {
+				labels: ["January", "February", "March", "April", "May", "June", "July"],
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+						data: [65, 59, 80, 81, 56, 55, 40]
+					}
+				]
+			};
+		var data2 = {
+				labels: ["January", "February", "March", "April", "May", "June", "July"],
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+						data: [65, 59, 80, 81, 56, 55, 40]
+					}
+				]
+			};
+		
+		function init(){
+			var ctx1 = $("#canvas1").get(0).getContext("2d");
+			myLineChart1 = new Chart(ctx1).Line(data1);
+			
+			var ctx2 = $("#canvas2").get(0).getContext("2d");
+			myLineChart2 = new Chart(ctx2).Line(data2);
+
+			$("#add").on( "click", function() {
+				var month = $("#month").val();
+				var value = $("#value").val();
+				var values = new Array();
+				values.push(value);
+				console.log("adding data...");
+				console.log("month:" + month);
+				console.log("value:" + value);
+				myLineChart1.addData(values, month);
+				console.log("data added...");  
+			});
+		}
+		
+		function addRefresh(){
+			setInterval(function(){
+				myLineChart1.addData(10, "hi"); 
+				console.log("refreshing 1");
+				myLineChart2.addData(10, "ho");
+				console.log("refreshing 2"); 
+			}, 1000);
+		}
+		
+		
+
+        </script>
+		<div>
+			<p> Consumo por banho </p>
+			<div style="width: 50%">
+			<canvas id="canvas1" height="450" width="600"></canvas>
+			</div>
+			
+			<p> Media </p>
+			<div style="width: 50%">
+				<canvas id="canvas2" height="450" width="600"></canvas>
+			</div>
+		</div>
+		
+    </body>
+</html>

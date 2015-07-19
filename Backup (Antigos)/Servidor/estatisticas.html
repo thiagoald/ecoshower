@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="nl">
+    <head>
+        <meta charset="utf-8">
+        <title>Estatísticas</title>
+        <style>
+			body {
+			    background-color: #53e3a6;
+			}
+
+			h1 {
+			    color: maroon;
+			    margin-left: 10px;
+			} 
+
+			div.canvas1 {
+				position:relative;
+				left:0px;
+			}
+
+			div.canvas2 {
+				position:relative;
+				right:0px;
+			}
+
+			h2 {
+				color:black;
+				margin-left: 40px;
+			}
+		</style>
+		<link rel="stylesheet" href="css/style.css">
+        <script type="text/javascript" src="Chart.js"></script>
+ <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    </head>
+
+    <body onLoad="init()">
+		<script type="text/javascript">
+
+		Array.prototype.average=function(){
+		    var sum=0;
+		    var j=0;
+		    for(var i=0;i<this.length;i++){
+		        if(isFinite(this[i])){
+		          sum=sum+parseFloat(this[i]);
+		           j++;
+		        }
+		    }
+		    if(j===0){
+		        return 0;
+		    }else{
+		        return sum/j;
+		    }
+
+		}
+
+		var realTime = true;
+		var myLineChart1, myLineChart2;
+		var data1 = {
+				labels: [],
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+						data: []
+					}
+				]
+			};
+		var data2 = {
+				labels: [],
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+						data: []
+					}
+				]
+			};
+		
+		function init(){
+			Chart.defaults.global.animation = false;
+
+			var ctx1 = $("#canvas1").get(0).getContext("2d");
+			ctx1.canvas.width = window.innerWidth;
+			ctx1.canvas.height = window.innerHeight*0.8;
+			myLineChart1 = new Chart(ctx1).Line(data1, {bezierCurve:false});
+
+			setInterval(function(){
+				var user = httpGet("http://172.20.18.24:3000/usuarioAtual");
+				console.log("Usuario atual:" + user);
+				var response = httpGet("http://172.20.18.24:3000/data?nome=" + user);
+				response = JSON.parse(response);
+				//console.log("Resposta = " + response);
+				var dados = [];
+				var labels = [];
+				var i = 0;
+				dados = response.banhos[response.banhos.length-1].consumo;
+				console.log("dados: ", dados);
+				dados.forEach(function(){
+					labels.push(JSON.stringify(i*5)+"s");
+					i++;
+				})
+				$("#consumoMedio")[0].innerHTML = "Média: " + JSON.stringify(dados.average()) + " l";
+
+				myLineChart1.destroy();
+				var ctx1 = $("#canvas1").get(0).getContext("2d");
+				data1.labels = labels;
+				//console.log("Dados: ", dados);
+				data1.datasets.data = dados.slice(0);
+				console.log(data1);
+				myLineChart1 = new Chart(ctx1).Line({
+				labels: labels,
+				datasets: [
+					{
+						label: "My First dataset",
+						fillColor: "rgba(220,220,220,0.2)",
+						strokeColor: "rgba(220,220,220,1)",
+						pointColor: "rgba(220,220,220,1)",
+						pointStrokeColor: "#fff",
+						pointHighlightFill: "#fff",
+						pointHighlightStroke: "rgba(220,220,220,1)",
+						data: dados
+					}
+				]
+			}, {bezierCurve:false});
+
+				// myLineChart1.addData(dados, labels);
+				// myLineChart1.removeData(); 
+				// console.log("refreshing 1");
+				// myLineChart2.addData(response, "ho");
+				// myLineChart2.removeData();
+				// console.log("refreshing 2"); 
+			}, 500);
+
+		}
+
+		function httpGet(theUrl)
+		{
+			var xmlHttp = new XMLHttpRequest();
+		    xmlHttp.open( "GET", theUrl, false );
+		    xmlHttp.send( null );
+		    return xmlHttp.responseText;
+		}
+		
+        </script>
+        <div id="hello">
+        </div>
+		<div>
+			<table>
+				<tr>
+					<td>
+						<table>
+							<tr>
+								<h1> Consumo por banho </h1>
+							</tr>
+							<tr>
+								<h2 id="consumoMedio"></h2>
+							</tr>
+						</table>
+						<div class="canvas1">
+						<canvas id="canvas1"></canvas>
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
+		
+    </body>
+</html>

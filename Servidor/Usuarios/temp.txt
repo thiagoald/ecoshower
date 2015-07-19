@@ -1,0 +1,100 @@
+var express = require('express');
+var app = express();
+var bodyParser = require('body-parser')
+var fs = require('fs');
+var dados = 'dados.txt'
+var autenticado =0
+var jsonDateStart 
+var jsonDateEnd
+
+
+app.use( bodyParser.json() );
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
+
+app.get('/', function (req, res) {
+
+	if(autenticado)
+	{
+		fs.readFile(dados, 'utf8', function(err,data){	
+				res.send(data);
+		});
+	}
+	else
+		res.send('Falha Na Autenticacao');
+});
+
+
+
+
+app.post('/', function (req, res) {
+	//console.log(req.body);
+	//console.log(req.body.Valor);
+	//console.log('post');
+	var now = new Date();
+	
+	
+	res.send('Sucesso');
+	//console.log(req.body.Valor);
+	//fs.writeFile('./Usuarios/'+req.body.nome+'.txt', JSON.stringify(req.body));
+
+
+    fs.readFile('./Usuarios/'+req.body.nome+'.txt', 'utf8', function(err,data){	
+
+    			if(autenticado==1)
+    			{
+    				
+					jsonDateEnd = now.toJSON();
+    				var dadosArquivo = data;
+    				
+
+
+    				console.log (dadosArquivo.banhos[0])
+
+    				if(data=='')
+    				{
+    					console.log('Primeira insercao');
+    					fs.writeFile('./Usuarios/'+req.body.nome+'.txt', JSON.stringify({'nome':req.body.nome ,'banhos':[{'inicio':jsonDateStart,'fim':jsonDateEnd,'consumo':req.body.Consumo,'fluxoMedio':req.body.FluxoMedio}]}));
+    					console.log('Inserido Com Sucesso');
+					}
+					else
+					{
+						now = new Date();
+						var jsonDateEnd = now.toJSON();
+						console.log('Repetindo ' + jsonDateEnd);
+						dadosArquivo.banhos[3] = {'inicio':jsonDateStart,'fim':jsonDateEnd,'consumo':req.body.Consumo,'fluxoMedio':req.body.FluxoMedio} ;
+     					//var dadosArquivo2 = JSON.parse(data);
+     				
+					}
+				}
+				else
+				{
+					console.log('Nao Autenticado');
+					now = new Date();
+					jsonDateStart = now.toJSON();
+					autenticado =1;
+					console.log('Autenticado: '+ jsonDateStart );
+				}
+	});
+
+	//var arquivo = require ('./fulano.txt');
+	//var arquivo = require ('./Usuarios/'+req.body.nome+'.txt');
+	//console.log(JSON.stringify(arquivo));
+	//fs.writeFile(dados, req.body.Valor);
+	//console.log('fudeo');
+    //console.log(data);
+    //console.log(JSON.stringify(dadosArquivo));
+    //dadosArquivo.banhos.push({'duracao':req.body.duracao, 'fluxoMedio':req.body.fluxoMedio,'consumo':req.body.consumo});
+    //fs.writeFile('./Usuarios/'+req.body.nome+'.txt', JSON.stringify(dadosArquivo));
+	//res.send(data);
+
+});
+
+
+var server = app.listen(3000, function () {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log('Example app listening at http://%s:%s', host, port);
+});

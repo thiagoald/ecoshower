@@ -30,7 +30,7 @@
 		</style>
 		<link rel="stylesheet" href="css/style.css">
         <script type="text/javascript" src="Chart.js"></script>
- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+ <script src="jquery-1.11.3.min.js"></script>
     </head>
 
     <body onLoad="init()">
@@ -95,9 +95,9 @@
 			myLineChart1 = new Chart(ctx1).Line(data1, {bezierCurve:false});
 
 			setInterval(function(){
-				var user = httpGet("http://172.20.18.24:3000/usuarioAtual");
+				var user = httpGet("http://192.168.0.107:3000/usuarioAtual");
 				console.log("Usuario atual:" + user);
-				var response = httpGet("http://172.20.18.24:3000/data?nome=" + user);
+				var response = httpGet("http://192.168.0.107:3000/data?nome=" + user);
 				response = JSON.parse(response);
 				//console.log("Resposta = " + response);
 				var dados = [];
